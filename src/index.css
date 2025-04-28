@@ -1,0 +1,21 @@
+@import "tailwindcss";
+:root {
+  --bg-header:#e4e4e7 ;
+  --bg-input:#fafafa;
+  --bg-color: #fafafa;
+  --text-color: #111111;
+  --button-bg: transparent;
+  --button-border: #111111;
+  --button-hover: #e0e0e0;
+}
+
+/* 🌙 Modo oscuro con override de variables */
+:root.dark {
+  --bg-header:#27272a ;
+  --bg-input:#3f3f46;
+  --bg-color-2:#18181b;
+  --bg-color: #09090b;
+  --text-color: #f5f5f5;
+  --button-border: #f5f5f5;
+  --button-hover: #333333;
+}

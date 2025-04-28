@@ -1,0 +1,70 @@
+
+.historial-container {
+  padding: 10px;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.historial-contenido{
+
+  padding: 10px;
+  background-color: var(--bg-color);
+}
+.historial-contenido h2{
+  text-align: center;
+}
+.historial-tabla{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: var(--bg-color-2);
+  color: var(--text-color);
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+.historial-tabla th,
+.historial-tabla td{
+  border: 2px solid #000000;
+  padding: 10px;
+  text-align: center;
+}
+.historial-tabla th{
+  background-color: #3498db ;
+  color: var(--text-color);
+}
+.historial-tabla tr:nth-child(even) {
+  background-color: #f2f2f2;
+  color: var(--text-color);
+}
+.historial-tabla tr:hover{
+  background-color: #269c577f;
+  transition: 0.3s;
+} 
+.input-busqueda{
+  font-family: prompt;
+  font-weight: 300;
+  padding: 10px;
+  margin: 2px 15px 15px 15px;
+  border-radius: 5px;
+  background-color: var(--bg-input);
+  color: var(--text-color);
+  border: 2px solid #007bff;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.input-busqueda::placeholder{
+  color:var(--text-color);
+}
+.diseño_total{
+background-color: var(--bg-color-2);
+color: var(--text-color);
+}
+.Total_Historial{
+  background-color: var(--bg-color-2);
+  font-weight: bold;
+  color: var(--text-color);
+}
