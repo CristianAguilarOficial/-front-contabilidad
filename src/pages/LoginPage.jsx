@@ -23,7 +23,7 @@ function LoginPage() {
   });
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/home');
+    if (isAuthenticated) navigate('/add-inventory');
   }, [isAuthenticated]);
 
   return (

@@ -1,70 +1,43 @@
 import { useInventory } from '../context/InventoryContext';
-import { useState } from 'react';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
-export default function InventoryHistory() {
+dayjs.extend(utc);
+
+export default function InventoryHistory({ onEditItem }) {
   const { inventario, eliminarItem } = useInventory();
-  const [search, setSearch] = useState('');
-  const [estado, setEstado] = useState('');
-  const [relevancia, setRelevancia] = useState('');
 
   const formatoMoneda = new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency: 'COP',
   });
 
-  // Filtrado de inventario basado en búsqueda, estado y relevancia
-  const inventarioFiltrado = inventario
-    .filter(
-      (item) =>
-        item.producto.toLowerCase().includes(search.toLowerCase()) &&
-        (estado ? item.estado === estado : true) &&
-        (relevancia ? item.relevancia === relevancia : true)
-    )
-    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  // Ordenar por fecha de creación DESCENDENTE
+  const inventarioOrdenado = [...inventario].sort(
+    (a, b) => new Date(b.createdAt || b._id) - new Date(a.createdAt || a._id)
+  );
+  const formatFecha = (fecha) => {
+    return dayjs.utc(fecha).format('DD/MM/YYYY');
+  };
 
-  const formatFecha = (fecha) => dayjs(fecha).format('DD/MM/YYYY'); // Formatear fecha
+  const handleEditar = (item) => {
+    if (onEditItem) {
+      onEditItem(item);
+    } else {
+      console.log('Editar item:', item);
+      alert(`Editando item: ${item.producto}`);
+    }
+  };
 
   return (
-    <div className="p-6 mt-10 bg-gray-50 rounded-xl shadow-md w-full max-w-6xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center">
+    <div className="p-6 mt-10 bg-white dark:bg-gray-800 rounded-xl shadow-md w-full max-w-6xl mx-auto joy-historial-titulo">
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white ">
         Historial de Inventarios
       </h2>
 
-      <div className="flex flex-wrap gap-4 mb-6 justify-center">
-        <input
-          type="text"
-          placeholder="Buscar producto..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 rounded-md w-48"
-        />
-        <select
-          value={estado}
-          onChange={(e) => setEstado(e.target.value)}
-          className="border p-2 rounded-md w-48"
-        >
-          <option value="">Estado (Todos)</option>
-          <option>Importante</option>
-          <option>Poco importante</option>
-          <option>Nada importante</option>
-        </select>
-        <select
-          value={relevancia}
-          onChange={(e) => setRelevancia(e.target.value)}
-          className="border p-2 rounded-md w-48"
-        >
-          <option value="">Relevancia (Todos)</option>
-          <option>Hogar</option>
-          <option>Empresa</option>
-          <option>Salud</option>
-          <option>Otros</option>
-        </select>
-      </div>
-
       <div className="overflow-x-auto">
-        <table className="table-auto w-full text-left">
-          <thead className="bg-blue-500 text-white">
+        <table className="table-auto w-full text-left text-gray-900 dark:text-white">
+          <thead className="bg-blue-500 text-white dark:bg-blue-700">
             <tr>
               <th className="p-3">Producto</th>
               <th className="p-3">Descripción</th>
@@ -76,18 +49,27 @@ export default function InventoryHistory() {
             </tr>
           </thead>
           <tbody>
-            {inventarioFiltrado.map((item) => (
-              <tr key={item._id} className="hover:bg-gray-100">
+            {inventarioOrdenado.map((item) => (
+              <tr
+                key={item._id}
+                className="hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
                 <td className="p-3">{item.producto}</td>
                 <td className="p-3">{item.description}</td>
                 <td className="p-3">{formatoMoneda.format(item.valor)}</td>
                 <td className="p-3">{item.estado}</td>
                 <td className="p-3">{item.relevancia}</td>
                 <td className="p-3">{formatFecha(item.fecha)}</td>
-                <td className="p-3">
+                <td className="p-3 flex gap-2">
                   <button
-                    onClick={() => eliminarItem(item._id)} // Eliminar item por ID
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => handleEditar(item)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm "
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => eliminarItem(item._id)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm "
                   >
                     Eliminar
                   </button>
@@ -96,9 +78,9 @@ export default function InventoryHistory() {
             ))}
           </tbody>
         </table>
-        {inventarioFiltrado.length === 0 && (
-          <p className="text-center mt-4 text-gray-500">
-            No se encontraron resultados.
+        {inventarioOrdenado.length === 0 && (
+          <p className="text-center mt-4 text-gray-500 dark:text-gray-400">
+            No hay inventarios aún. ¡Hora de llenar esas estanterías! 🧾
           </p>
         )}
       </div>

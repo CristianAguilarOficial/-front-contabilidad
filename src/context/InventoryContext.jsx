@@ -26,9 +26,9 @@ export function InventoryProvider({ children }) {
     (async () => {
       try {
         setLoading(true);
-        console.log('🛰️  Iniciando carga del inventario...');
-        const res = await getInventarioRequest(); // aquí va el GET
-        console.log('✅  Datos desde la BD:', res.data);
+
+        const res = await getInventarioRequest();
+
         setInventario(res.data);
       } catch (err) {
         console.error(
@@ -40,6 +40,18 @@ export function InventoryProvider({ children }) {
       }
     })();
   }, []);
+
+  const getInventario = async () => {
+    try {
+      setLoading(true);
+      const res = await getInventarioRequest();
+      setInventario(res.data);
+    } catch (error) {
+      console.error('Error al obtener inventario', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // 2️⃣ Crear inventario
   const createInventario = async (item) => {
@@ -54,10 +66,20 @@ export function InventoryProvider({ children }) {
 
   // 3️⃣ Eliminar inventario (coincide con eliminarItem en tus componentes)
   const eliminarItem = async (id) => {
+    const confirmar = window.confirm(
+      '¿Estás seguro de que deseas eliminar este ítem?'
+    );
+
+    if (!confirmar) return;
+
     try {
-      await deleteInventarioRequest(id); // DELETE /api/inventario/:id
-      setInventario((prev) => prev.filter((i) => i._id !== id)); // Filtra el estado local
+      // Opcional: Podés mostrar un loader específico aquí si usás un estado como `setLoadingId(id)`
+      await deleteInventarioRequest(id);
+
+      // Remover del estado local si fue exitoso
+      setInventario((prev) => prev.filter((i) => i._id !== id));
     } catch (err) {
+      alert('No se pudo eliminar el ítem. Inténtalo de nuevo.');
       console.error('Error eliminando inventario:', err);
     }
   };
@@ -73,7 +95,7 @@ export function InventoryProvider({ children }) {
   };
 
   // 5️⃣ Actualizar inventario
-  const updateInventario = async (id, item) => {
+  const actualizarItem = async (id, item) => {
     try {
       const res = await updateInventarioRequest(id, item); // PUT /api/inventario/:id
       setInventario((prev) => prev.map((i) => (i._id === id ? res.data : i)));
@@ -88,10 +110,11 @@ export function InventoryProvider({ children }) {
       value={{
         inventario,
         loading,
+        getInventario,
         createInventario,
         eliminarItem,
         getInventarioById,
-        updateInventario,
+        actualizarItem,
       }}
     >
       {children}

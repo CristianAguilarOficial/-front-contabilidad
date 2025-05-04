@@ -1,36 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/buttonThemen.css';
+import { FaMoon, FaSun } from 'react-icons/fa';
 
-const DarkModeToggle = () => {
-  const [isDark, setIsDark] = useState(false);
+export default function DarkModeToggle() {
+  const [modoOscuro, setModoOscuro] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
 
   useEffect(() => {
-    const saved = localStorage.getItem('darkMode') === 'true';
-    setIsDark(saved);
-    toggleRootClass(saved);
-  }, []);
-
-  const toggleRootClass = (dark) => {
     const root = document.documentElement;
-    if (dark) {
+
+    if (modoOscuro) {
       root.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       root.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
-  };
+  }, [modoOscuro]);
 
-  const toggleMode = () => {
-    const newMode = !isDark;
-    setIsDark(newMode);
-    toggleRootClass(newMode);
-    localStorage.setItem('darkMode', newMode);
+  const toggleModoOscuro = () => {
+    setModoOscuro((prev) => !prev);
   };
 
   return (
-    <button className="toggle-btn" onClick={toggleMode}>
-      {isDark ? '☀️ ' : '🌙 '}
+    <button
+      onClick={toggleModoOscuro}
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300 ease-in-out"
+      title="Cambiar modo oscuro"
+    >
+      {modoOscuro ? (
+        <FaSun className="text-yellow-400" />
+      ) : (
+        <FaMoon className="text-gray-800 dark:text-gray-100" />
+      )}
     </button>
   );
-};
-
-export default DarkModeToggle;
+}
