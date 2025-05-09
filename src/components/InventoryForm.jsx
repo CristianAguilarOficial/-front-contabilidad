@@ -75,7 +75,6 @@ export default function InventoryForm({
         await createInventario(data);
       }
 
-      console.log(data);
       reset(); // Limpiar formulario tras enviar
 
       // Establecer valores predeterminados después de enviar

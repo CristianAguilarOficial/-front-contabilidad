@@ -98,6 +98,7 @@ function Navbar() {
             </li>
           </>
         )}
+
         <DarkModeToggle />
       </ul>
 

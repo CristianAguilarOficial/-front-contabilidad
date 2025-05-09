@@ -2,28 +2,28 @@ import { Link } from 'react-router-dom';
 
 function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-tr from-zinc-900 via-slate-800 to-green-700 text-white">
+    <div className="flex flex-col min-h-screen  text-black dark:text-gray-200">
       <main className="flex-grow flex items-center justify-center px-6 pt-28">
         <div className="max-w-3xl text-center">
-          <h1 className="text-5xl font-bold mb-6 text-white">
+          <h1 className="text-5xl font-bold mb-6 ">
             💸 Lleva el control de tus gastos de forma moderna y sin estrés
           </h1>
-          <p className="text-lg text-zinc-300 mb-4">
+          <p className="text-lg text-black dark:text-zinc-300 mb-4">
             ¿Estás cansado de anotar tus gastos en un cuaderno que siempre se
             pierde, o de pelear con fórmulas en Excel que nunca cuadran? Esta
             aplicación fue creada pensando en ti.
           </p>
-          <p className="text-lg text-zinc-300 mb-4">
+          <p className="text-lg dark:text-zinc-300 mb-4">
             Registra tus compras, pagos y cualquier otro gasto diario, mensual o
             anual con solo unos clics. Guarda todo en la nube, accede desde
             cualquier dispositivo, y olvídate del desorden.
           </p>
-          <p className="text-lg text-zinc-300 mb-4">
+          <p className="text-lg dark:text-zinc-300 mb-4">
             Además, puedes filtrar tus gastos por fecha, revisar cuánto has
             gastado en cada mes o categoría, y tener un historial organizado sin
             necesidad de conocimientos técnicos.
           </p>
-          <p className="text-md text-zinc-400 mb-6 italic">
+          <p className="text-md dark:text-zinc-400 mb-6 italic">
             "Digitaliza tu libreta. Organiza tu dinero. Vive más tranquilo."
           </p>
 
@@ -45,7 +45,7 @@ function HomePage() {
         </div>
       </main>
 
-      <footer className="border-t border-zinc-700 py-6 text-center text-zinc-500 text-sm">
+      <footer className="bg-zinc-800 dark:bg-zinc-800 border-t border-zinc-700 mt-12 py-6 text-center text-zinc-300 text-sm">
         <p>
           Creada para ayudarte a llevar tus finanzas con claridad, orden y
           facilidad.

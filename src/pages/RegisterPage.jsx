@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useAuth } from "../context/authContext";
-import { Eye, EyeOff } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useAuth } from '../context/authContext';
+import { Eye, EyeOff } from 'lucide-react';
 
 function RegisterPage() {
   const {
@@ -21,7 +21,7 @@ function RegisterPage() {
 
   const onSubmit = handleSubmit(async (values) => {
     if (values.password !== values.confirmPassword) {
-      return alert("Las contraseñas no coinciden");
+      return alert('Las contraseñas no coinciden');
     }
 
     const result = await signup(values);
@@ -29,26 +29,27 @@ function RegisterPage() {
     if (result.success && result.verified === false) {
       setRegistrationSuccess(true);
     } else if (result.success && result.verified === true) {
-      navigate("/tasks");
+      navigate('/tasks');
     }
   });
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/tasks");
+    if (isAuthenticated) navigate('/tasks');
   }, [isAuthenticated]);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-zinc-900">
-      <div className="bg-zinc-800 max-w-md w-full p-8 rounded-xl shadow-lg">
+    <div className="flex items-center justify-center h-screen ">
+      <div className=" bg-transparent dark:bg-zinc-800 max-w-md w-full p-8 rounded-xl shadow-lg">
         {registrationSuccess ? (
           <div className="text-center">
             <h1 className="text-3xl font-bold text-green-400 mb-4">
               ¡Registro exitoso!
             </h1>
-            <p className="text-zinc-200 mb-6">
+            <p className="dark:text-zinc-200 mb-6">
               Hemos enviado un correo de verificación a tu dirección de email.
               Por favor, verifica tu correo para activar tu cuenta.
             </p>
+            <p className="bg-amber-50 text-red-600">Revisa el buzon de spam</p>
             <Link
               to="/login"
               className="bg-green-500 hover:bg-green-600 transition-colors text-white px-6 py-2 rounded-md"
@@ -69,8 +70,8 @@ function RegisterPage() {
             <form onSubmit={onSubmit}>
               <input
                 type="text"
-                {...register("username", { required: true })}
-                className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+                {...register('username', { required: true })}
+                className="w-full dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md my-2 border-b-2 dark:border-zinc-900 dark:border-b-2 active:border-none"
                 placeholder="Nombre de usuario"
               />
               {errors.username && (
@@ -80,8 +81,8 @@ function RegisterPage() {
               )}
               <input
                 type="email"
-                {...register("email", { required: true })}
-                className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+                {...register('email', { required: true })}
+                className="w-full dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md my-2  border-b-2 dark:border-zinc-900 dark:border-b-2 active:border-none"
                 placeholder="Correo electrónico"
                 autoComplete="email"
               />
@@ -94,16 +95,16 @@ function RegisterPage() {
               {/* Campo Contraseña */}
               <div className="relative">
                 <input
-                  type={showPassword ? "text" : "password"}
-                  {...register("password", { required: true })}
-                  className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2 pr-10"
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('password', { required: true })}
+                  className="w-full dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md my-2 pr-10  border-b-2 dark:border-zinc-900 dark:border-b-2 active:border-none"
                   placeholder="Contraseña"
                   autoComplete="new-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-[1.35rem] text-zinc-300 hover:text-white"
+                  className="absolute right-3 top-[1.35rem] dark:text-zinc-300 dark:hover:text-white"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -117,21 +118,21 @@ function RegisterPage() {
               {/* Campo Confirmar contraseña */}
               <div className="relative">
                 <input
-                  type={showConfirm ? "text" : "password"}
-                  {...register("confirmPassword", {
+                  type={showConfirm ? 'text' : 'password'}
+                  {...register('confirmPassword', {
                     required: true,
                     validate: (value) =>
-                      value === watch("password") ||
-                      "Las contraseñas no coinciden",
+                      value === watch('password') ||
+                      'Las contraseñas no coinciden',
                   })}
-                  className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2 pr-10"
+                  className="w-full dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md my-2 pr-10  border-b-2 dark:border-zinc-900 dark:border-b-2 active:border-none "
                   placeholder="Confirmar contraseña"
                   autoComplete="new-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-3 top-[1.35rem] text-zinc-300 hover:text-white"
+                  className="absolute right-3 top-[1.35rem] dark:text-zinc-300 dark:hover:text-white"
                 >
                   {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -149,8 +150,8 @@ function RegisterPage() {
                 Registrarse
               </button>
             </form>
-            <p className="text-zinc-300 text-center mt-4">
-              ¿Ya tienes una cuenta?{" "}
+            <p className="dark:text-zinc-300 text-center mt-4">
+              ¿Ya tienes una cuenta?{' '}
               <Link to="/login" className="text-green-400 hover:underline">
                 Inicia sesión
               </Link>

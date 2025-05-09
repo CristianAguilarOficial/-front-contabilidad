@@ -7,7 +7,7 @@ import {
   getInventarioByIdRequest,
   updateInventarioRequest,
 } from '../api/inventory';
-
+import { useAuth } from './authContext';
 const InventoryContext = createContext();
 
 export const useInventory = () => {
@@ -19,10 +19,12 @@ export const useInventory = () => {
 };
 
 export function InventoryProvider({ children }) {
+  const { isAuthenticated } = useAuth();
   const [inventario, setInventario] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!isAuthenticated) return; // 👈 evita que corra si no hay sesión
     (async () => {
       try {
         setLoading(true);
@@ -39,7 +41,7 @@ export function InventoryProvider({ children }) {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [isAuthenticated]);
 
   const getInventario = async () => {
     try {
