@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/authContext';
 import { Eye, EyeOff } from 'lucide-react';
-
+import { motion } from 'framer-motion';
+import { fadeInUp } from '../assets/animation/Animaciones';
 function RegisterPage() {
   const {
     register,
@@ -39,7 +40,12 @@ function RegisterPage() {
 
   return (
     <div className="flex items-center justify-center h-screen ">
-      <div className=" bg-transparent dark:bg-zinc-800 max-w-md w-full p-8 rounded-xl shadow-lg">
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        className=" bg-transparent dark:bg-zinc-800 max-w-md w-full p-8 rounded-xl shadow-lg"
+      >
         {registrationSuccess ? (
           <div className="text-center">
             <h1 className="text-3xl font-bold text-green-400 mb-4">
@@ -49,7 +55,9 @@ function RegisterPage() {
               Hemos enviado un correo de verificación a tu dirección de email.
               Por favor, verifica tu correo para activar tu cuenta.
             </p>
-            <p className="bg-amber-50 text-red-600">Revisa el buzon de spam</p>
+            <p className="bg-amber-50 m-4  text-red-600 rounnded-md p-2">
+              Revisa el buzon de spam
+            </p>
             <Link
               to="/login"
               className="bg-green-500 hover:bg-green-600 transition-colors text-white px-6 py-2 rounded-md"
@@ -158,7 +166,7 @@ function RegisterPage() {
             </p>
           </>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

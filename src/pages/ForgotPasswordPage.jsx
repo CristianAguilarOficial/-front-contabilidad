@@ -32,9 +32,9 @@ function ForgotPasswordPage() {
   });
 
   return (
-    <div className="relative flex items-center justify-center h-screen overflow-hidden bg-zinc-800">
+    <div className="relative flex items-center justify-center h-screen overflow-hidden ">
       <div className="z-10 border-2 border-green-500 max-w-md w-full p-10 rounded-md shadow-md">
-        <h1 className="text-3xl font-bold text-white text-center mb-6">
+        <h1 className="text-3xl font-bold dark:text-white text-center mb-6">
           Recuperar Contraseña
         </h1>
 
@@ -50,7 +50,7 @@ function ForgotPasswordPage() {
 
         {!success && (
           <form onSubmit={onSubmit}>
-            <p className="text-white mb-4">
+            <p className="dark:text-white mb-4">
               Ingresa tu correo electrónico y te enviaremos instrucciones para
               restablecer tu contraseña.
             </p>
@@ -58,7 +58,7 @@ function ForgotPasswordPage() {
             <input
               type="email"
               {...register('email', { required: 'El correo es obligatorio' })}
-              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+              className="w-full dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md my-2 border-b-2 dark:border-zinc-900 dark:border-b-2 active:border-none"
               placeholder="Correo electrónico"
               disabled={loading}
             />

@@ -3,6 +3,8 @@ import { useAuth } from '../context/authContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { fadeInUp } from '../assets/animation/Animaciones';
 
 function LoginPage() {
   const {
@@ -28,7 +30,12 @@ function LoginPage() {
 
   return (
     <div className="relative flex items-center justify-center h-screen overflow-hidden ">
-      <div className="z-10  border-2 border-green-500 max-w-md w-full p-10 rounded-md shadow-md">
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        className="z-10  border-2 border-green-500 max-w-md w-full p-10 rounded-md shadow-md"
+      >
         {signinErrors.map((error, i) => (
           <div className="bg-red-600 p-2 text-white mb-2 rounded" key={i}>
             {error}
@@ -94,7 +101,7 @@ function LoginPage() {
             Regístrate
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }

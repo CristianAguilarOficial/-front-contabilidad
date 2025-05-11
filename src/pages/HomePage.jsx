@@ -1,10 +1,22 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { fadeInUp, popIn } from '../assets/animation/Animaciones';
 
 function HomePage() {
   return (
     <div className="flex flex-col min-h-screen  text-black dark:text-gray-200">
-      <main className="flex-grow flex items-center justify-center px-6 pt-28">
-        <div className="max-w-3xl text-center">
+      <motion.main
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        className="flex-grow flex items-center justify-center px-6 pt-28"
+      >
+        <motion.div
+          variants={popIn}
+          initial="hidden"
+          animate="visible"
+          className="max-w-3xl text-center"
+        >
           <h1 className="text-5xl font-bold mb-6 ">
             💸 Lleva el control de tus gastos de forma moderna y sin estrés
           </h1>
@@ -42,8 +54,8 @@ function HomePage() {
               </button>
             </Link>
           </div>
-        </div>
-      </main>
+        </motion.div>
+      </motion.main>
 
       <footer className="bg-zinc-800 dark:bg-zinc-800 border-t border-zinc-700 mt-12 py-6 text-center text-zinc-300 text-sm">
         <p>

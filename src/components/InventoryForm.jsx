@@ -1,6 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { useInventory } from '../context/InventoryContext';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { fadeInUp } from '../assets/animation/Animaciones';
 
 export default function InventoryForm({
   itemToEdit = null,
@@ -126,7 +128,10 @@ export default function InventoryForm({
       <h1 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
         {formMode === 'edit' ? 'Editar Gasto' : 'Registrar Gasto'}
       </h1>
-      <form
+      <motion.form
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
@@ -252,7 +257,7 @@ export default function InventoryForm({
             </button>
           )}
         </div>
-      </form>
+      </motion.form>
     </div>
   );
 }

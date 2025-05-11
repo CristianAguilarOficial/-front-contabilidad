@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import MiLogo from '../assets/LogoBaseWeb.svg';
-import DarkModeToggle from './DarkModeToggle';
+import ButtonTheme from './ButtonTheme';
 import { Menu, X } from 'lucide-react';
 
 function Navbar() {
@@ -99,7 +99,7 @@ function Navbar() {
           </>
         )}
 
-        <DarkModeToggle />
+        <ButtonTheme />
       </ul>
 
       {/* Menú móvil */}
@@ -182,7 +182,7 @@ function Navbar() {
               </li>
             </>
           )}
-          <DarkModeToggle />
+          <ButtonTheme />
         </ul>
       )}
     </nav>
