@@ -14,6 +14,7 @@ import InventoryFormPage from './pages/InventoryFormPage';
 import QuienesSomos from './pages/QuienesSomos';
 import ParticlesBackground from './components/ParticlesBackground';
 import { ThemeProvider } from './context/ThemeContext';
+import BannerSinBackend from './components/BannerSinBackend';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <div className="absolute inset-0 dark:backdrop-blur-xs z-0" />
               <div className="relative z-10">
                 <Navbar />
+                <BannerSinBackend mensaje='los servidores del backend se apagaron por que se acabo la membrecía gratuita'/>
                 <main className="flex-grow">
                   <Routes>
                     <Route path="/" element={<HomePage />} />
