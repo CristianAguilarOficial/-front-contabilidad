@@ -1,6 +1,16 @@
 import axios from 'axios';
+import { auth } from '../firebase';
 
-export default axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api`, // <-- apunta al prefijo /api
-  withCredentials: true, // si usas cookies para auth
+const api = axios.create({
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
 });
+
+api.interceptors.request.use(async (config) => {
+  if (auth?.currentUser) {
+    const token = await auth.currentUser.getIdToken();
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export default api;

@@ -1,11 +1,7 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import {
-  registerRequest,
-  loginRequest,
-  verifyTokenRequest,
-  logoutRequest,
-} from '../api/auth';
-import Cookies from 'js-cookie';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
+import { registerRequest, loginRequest, logoutRequest } from '../api/auth';
 
 export const AuthContext = createContext();
 
@@ -17,56 +13,59 @@ export const useAuth = () => {
   return context;
 };
 
+const toSafeUser = (fbUser) =>
+  fbUser
+    ? {
+        uid: fbUser.uid,
+        email: fbUser.email,
+        username: fbUser.displayName || fbUser.email?.split('@')[0] || 'usuario',
+      }
+    : null;
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [errors, setError] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const signup = async (user) => {
+  const pushErrors = (error) => {
+    const list = Array.isArray(error)
+      ? error
+      : [error?.message || 'Ocurrió un error inesperado'];
+    setErrors(list);
+    setTimeout(() => setErrors([]), 6000);
+  };
+
+  useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
+      setUser(toSafeUser(fbUser));
+      setIsAuthenticated(!!fbUser);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  const signup = async (userForm) => {
     try {
-      const res = await registerRequest(user);
-
-      // Si el usuario aún no ha verificado su correo
-      if (res.data.verified === false) {
-        return { success: true, verified: false };
-      }
-
-      // Usuario registrado y verificado, autenticación directa
-      setUser(res.data);
-      setIsAuthenticated(true);
-
-      return { success: true, verified: true };
+      await registerRequest(userForm);
+      return { success: true, verified: false };
     } catch (error) {
-      console.error('Error en signup:', error.response);
-
-      const errData = error.response?.data;
-
-      // Si es un array de errores, lo pasamos directo
-      if (Array.isArray(errData)) {
-        setError(errData);
-      } else {
-        // Si es un solo mensaje, lo envolvemos en array
-        setError([errData?.message || 'Ocurrió un error inesperado']);
-      }
-
+      pushErrors(error);
       return { success: false, error: true };
     }
   };
 
-  const signin = async (user) => {
+  const signin = async (userForm) => {
     try {
-      const res = await loginRequest(user);
-
-      setIsAuthenticated(true);
-      setUser(res.data);
-      // Almacenar el token también en localStorage como respaldo
-      localStorage.setItem('isAuthenticated', 'true');
+      await loginRequest(userForm);
+      return { success: true };
     } catch (error) {
-      if (Array.isArray(error.response.data)) {
-        return setError(error.response.data);
-      }
-      setError([error.response.data.message]);
+      pushErrors(error);
+      return { success: false, error: true };
     }
   };
 
@@ -75,55 +74,8 @@ export const AuthProvider = ({ children }) => {
       await logoutRequest();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-    } finally {
-      Cookies.remove('token');
-      localStorage.removeItem('isAuthenticated');
-      setIsAuthenticated(false);
-      setUser(null);
     }
   };
-
-  useEffect(() => {
-    if (errors.length > 0) {
-      const timer = setTimeout(() => {
-        setError([]);
-      }, 5000);
-      return () => clearTimeout(timer); // Cleanup the timer on unmount
-    }
-  }, [errors]);
-
-  useEffect(() => {
-    async function checkLogin() {
-      const cookies = Cookies.get();
-      const localAuth = localStorage.getItem('isAuthenticated');
-
-      if (!cookies.token && !localAuth) {
-        setIsAuthenticated(false);
-        setLoading(false);
-        return setUser(null);
-      }
-      try {
-        const res = await verifyTokenRequest();
-        if (!res.data) {
-          setIsAuthenticated(false);
-          localStorage.removeItem('isAuthenticated');
-          setLoading(false);
-          return;
-        }
-
-        setIsAuthenticated(true);
-        setUser(res.data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setIsAuthenticated(false);
-        setUser(null);
-        localStorage.removeItem('isAuthenticated');
-        setLoading(false);
-      }
-    }
-    checkLogin();
-  }, []);
 
   return (
     <AuthContext.Provider

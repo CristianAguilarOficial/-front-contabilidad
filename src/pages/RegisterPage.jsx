@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/authContext';
 import { Eye, EyeOff } from 'lucide-react';
@@ -14,8 +14,7 @@ function RegisterPage() {
   } = useForm();
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const { signup, isAuthenticated, errors: registerErrors } = useAuth();
-  const navigate = useNavigate();
+  const { signup, errors: registerErrors } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -27,16 +26,10 @@ function RegisterPage() {
 
     const result = await signup(values);
 
-    if (result.success && result.verified === false) {
+    if (result.success) {
       setRegistrationSuccess(true);
-    } else if (result.success && result.verified === true) {
-      navigate('/tasks');
     }
   });
-
-  useEffect(() => {
-    if (isAuthenticated) navigate('/tasks');
-  }, [isAuthenticated]);
 
   return (
     <div className="flex items-center justify-center h-screen ">
@@ -53,7 +46,8 @@ function RegisterPage() {
             </h1>
             <p className="dark:text-zinc-200 mb-6">
               Hemos enviado un correo de verificación a tu dirección de email.
-              Por favor, verifica tu correo para activar tu cuenta.
+              Por favor, verifica tu correo para activar tu cuenta y luego
+              inicia sesión.
             </p>
             <p className="bg-amber-50 m-4  text-red-600 rounnded-md p-2">
               Revisa el buzon de spam
@@ -100,7 +94,6 @@ function RegisterPage() {
                 </p>
               )}
 
-              {/* Campo Contraseña */}
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -123,7 +116,6 @@ function RegisterPage() {
                 </p>
               )}
 
-              {/* Campo Confirmar contraseña */}
               <div className="relative">
                 <input
                   type={showConfirm ? 'text' : 'password'}

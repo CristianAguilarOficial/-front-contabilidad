@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@12.4.1",
+  "engines": {
+    "pnpm": ">=12"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -14,6 +18,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
+    "firebase": "^12.19.0",
     "framer-motion": "^12.9.4",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.503.0",

@@ -3,9 +3,6 @@ import { AuthProvider } from './context/authContext';
 import { InventoryProvider } from './context/InventoryContext';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import VerifyEmailPage from './pages/VerifyEmailPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
 import MejoradoInventoryHistory from './pages/HistorialPage';
 import Navbar from './components/Navbar';
 import ProtectedRouter from './ProtectedRouter';
@@ -14,7 +11,6 @@ import InventoryFormPage from './pages/InventoryFormPage';
 import QuienesSomos from './pages/QuienesSomos';
 import ParticlesBackground from './components/ParticlesBackground';
 import { ThemeProvider } from './context/ThemeContext';
-import BannerSinBackend from './components/BannerSinBackend';
 
 function App() {
   return (
@@ -27,25 +23,12 @@ function App() {
               <div className="absolute inset-0 dark:backdrop-blur-xs z-0" />
               <div className="relative z-10">
                 <Navbar />
-                <BannerSinBackend mensaje='los servidores del backend se apagaron por que se acabo la membrecía gratuita'/>
                 <main className="flex-grow">
                   <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/quienes-somos" element={<QuienesSomos />} />
-                    <Route
-                      path="/forgot-password"
-                      element={<ForgotPasswordPage />}
-                    />
-                    <Route
-                      path="/reset-password/:token"
-                      element={<ResetPasswordPage />}
-                    />
-                    <Route
-                      path="/verify-email/:token"
-                      element={<VerifyEmailPage />}
-                    />
 
                     <Route element={<ProtectedRouter />}>
                       <Route
